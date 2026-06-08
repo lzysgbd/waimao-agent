@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>外贸 AI Agent v1.1</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <h1>外贸 AI Agent</h1>
+          <p>询盘分析、梯度报价、报价单草稿、跟进阶段管理</p>
+        </div>
+        <div class="status">
+          <span id="apiStatus" class="pill">检测中</span>
+          <button id="resetBtn" class="ghost">清空本地数据</button>
+        </div>
+      </header>
+
+      <section class="grid">
+        <div class="panel input-panel">
+          <div class="panel-head">
+            <h2>询盘</h2>
+            <button id="sampleInquiryBtn" class="ghost">填入示例</button>
+          </div>
+          <textarea id="inquiryText" placeholder="粘贴客户询盘，例如：Dear, we need 5000 pcs solar garden lights for Germany, FOB Shenzhen..."></textarea>
+
+          <div class="settings">
+            <label>
+              利润率 %
+              <input id="marginInput" type="number" value="12" min="0" step="1" />
+            </label>
+            <label>
+              默认贸易术语
+              <select id="incotermInput">
+                <option>FOB</option>
+                <option>CIF</option>
+                <option>EXW</option>
+                <option>DAP</option>
+                <option>DDP</option>
+              </select>
+            </label>
+            <label>
+              付款方式
+              <input id="paymentInput" value="30% T/T deposit, 70% before shipment" />
+            </label>
+            <label>
+              报价有效期
+              <input id="validityInput" value="15 days" />
+            </label>
+          </div>
+
+          <button id="analyzeBtn" class="primary">分析询盘并生成草稿</button>
+        </div>
+
+        <div class="panel products-panel">
+          <div class="panel-head">
+            <h2>产品/价格表</h2>
+            <a href="/sample-products-v1.1.csv" download>下载示例 CSV</a>
+          </div>
+          <div class="upload">
+            <input id="productFile" type="file" accept=".csv,.xlsx,.xlsm" />
+            <button id="uploadBtn" class="secondary">上传产品表</button>
+          </div>
+          <p class="hint">字段支持：产品名、型号、MOQ、单价、price_1000、price_5000、币种、包装、交期、HS Code、重量、体积、认证。CSV 和 XLSX 均可。</p>
+          <div id="productSummary" class="summary"></div>
+        </div>
+      </section>
+
+      <section class="panel workflow-panel">
+        <div class="panel-head">
+          <div>
+            <h2>客户工作流看板</h2>
+            <p class="hint">点击客户卡片可回到详情；阶段变化会保存到本地记录。</p>
+          </div>
+          <button id="refreshWorkflowBtn" class="ghost">刷新看板</button>
+        </div>
+        <div id="workflowBoard" class="workflow-board"></div>
+        <div id="workflowDetail" class="workflow-detail empty">暂无选中客户</div>
+      </section>
+
+      <section class="results">
+        <div class="panel">
+          <h2>询盘分析</h2>
+          <div id="analysisView" class="empty">等待分析结果</div>
+        </div>
+        <div class="panel">
+          <h2>报价 / PI 草稿</h2>
+          <div id="quoteView" class="empty">等待报价草稿</div>
+        </div>
+        <div class="panel">
+          <h2>英文回复草稿</h2>
+          <pre id="emailView" class="empty">等待邮件草稿</pre>
+        </div>
+        <div class="panel">
+          <h2>跟进提醒</h2>
+          <div id="followupView" class="empty">等待跟进建议</div>
+        </div>
+      </section>
+
+      <section class="panel reminders">
+        <h2>最近跟进任务</h2>
+        <div id="remindersList" class="task-list"></div>
+      </section>
+    </main>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>
